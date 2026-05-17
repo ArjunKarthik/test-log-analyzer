@@ -27,6 +27,8 @@ This approach uses streaming I/O and never loads the full file into memory.
 The parallel path batches input lines and processes each batch with Rayon.
 
 - The file is read in chunks of lines, where each chunk is a `Vec<String>`.
+- The number of batches dispatched at once is determined by the number of available CPU cores on the machine.
+- Each batch contains a fixed number of lines: `10_000`.
 - Chunks are collected into a buffer vector `vec` and dispatched to a Rayon pool for processing.
 - A shared `Arc<LogAnalyzer>` is used so each worker can update counters concurrently.
 
